@@ -1,0 +1,125 @@
+{
+  "folders": [
+    {
+      "name": "🏠 Land Registry DApp",
+      "path": "."
+    },
+    {
+      "name": "⛓️ Smart Contracts",
+      "path": "./contracts"
+    },
+    {
+      "name": "🌐 Frontend",
+      "path": "./frontend"
+    }
+  ],
+  "settings": {
+    "solidity.defaultCompiler": "remote",
+    "solidity.compileUsingRemoteVersion": "v0.8.20+commit.a1b79de6",
+    "solidity.packageDefaultDependenciesContractsDirectory": "contracts",
+    "solidity.packageDefaultDependenciesDirectory": "node_modules",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "files.associations": {
+      "*.sol": "solidity"
+    },
+    "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+    },
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "eslint.workingDirectories": ["frontend"],
+    "prettier.configPath": "./frontend/.prettierrc"
+  },
+  "extensions": {
+    "recommendations": [
+      "juanblanco.solidity",
+      "ms-vscode.vscode-typescript-next",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-eslint",
+      "github.copilot",
+      "eamodio.gitlens",
+      "mhutchie.git-graph",
+      "yzhang.markdown-all-in-one",
+      "bierner.markdown-mermaid",
+      "ms-vscode.powershell"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🔨 Compile Contracts",
+        "type": "shell",
+        "command": "npx hardhat compile",
+        "group": "build",
+        "options": {
+          "cwd": "${workspaceFolder}/contracts"
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        }
+      },
+      {
+        "label": "🧪 Test Contracts",
+        "type": "shell",
+        "command": "npx hardhat test",
+        "group": "test",
+        "options": {
+          "cwd": "${workspaceFolder}/contracts"
+        }
+      },
+      {
+        "label": "🚀 Deploy Local",
+        "type": "shell",
+        "command": "npx hardhat run scripts/deploy.js --network localhost",
+        "group": "build",
+        "options": {
+          "cwd": "${workspaceFolder}/contracts"
+        }
+      },
+      {
+        "label": "🌐 Start Frontend",
+        "type": "shell",
+        "command": "npm start",
+        "group": "build",
+        "options": {
+          "cwd": "${workspaceFolder}/frontend"
+        }
+      },
+      {
+        "label": "⛓️ Start Hardhat Node",
+        "type": "shell",
+        "command": "npx hardhat node",
+        "group": "build",
+        "options": {
+          "cwd": "${workspaceFolder}/contracts"
+        },
+        "isBackground": true
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🐛 Debug Frontend",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/frontend/node_modules/.bin/react-scripts",
+        "args": ["start"],
+        "env": {
+          "BROWSER": "none"
+        },
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      }
+    ]
+  }
+}
