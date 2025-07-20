@@ -99,6 +99,34 @@ export class BlockchainService {
     }
   }
 
+  // Get All Lands (for admin dashboard)
+  async getAllLands() {
+    try {
+      const totalLands = await this.contract.landCounter();
+      const lands = [];
+      
+      for (let i = 1; i <= totalLands; i++) {
+        try {
+          const land = await this.getLandDetails(i);
+          lands.push(land);
+        } catch (error) {
+          // Skip if land doesn't exist or error occurred
+          console.warn(`Error getting land ${i}:`, error);
+        }
+      }
+      
+      return lands;
+    } catch (error) {
+      console.error("Error getting all lands:", error);
+      return [];
+    }
+  }
+
+  // Transfer Land (alias for transferOwnership)
+  async transferLand(landId, newOwner) {
+    return this.transferOwnership(landId, newOwner);
+  }
+
   // Listen to Events
   onLandRegistered(callback) {
     this.contract.on("LandRegistered", callback);
