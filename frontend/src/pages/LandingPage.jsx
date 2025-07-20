@@ -1,10 +1,7 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { useWallet } from '../hooks/useWallet';
 
 const LandingPage = () => {
-  const { isConnected } = useWallet();
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-600 to-red-800">
       {/* Navigation */}
@@ -14,22 +11,8 @@ const LandingPage = () => {
           <div className="hidden md:flex space-x-6">
             <a href="#" className="hover:text-red-200 transition-colors">Home</a>
             <a href="#" className="hover:text-red-200 transition-colors">About</a>
-            <div className="relative group">
-              <a href="#" className="hover:text-red-200 transition-colors flex items-center">
-                Services <span className="ml-1"></span>
-              </a>
-            </div>
-            <div className="relative group">
-              <a href="#" className="hover:text-red-200 transition-colors flex items-center">
-                Pages <span className="ml-1"></span>
-              </a>
-            </div>
-            <div className="relative group">
-              <a href="#" className="hover:text-red-200 transition-colors flex items-center">
-                Blogs <span className="ml-1"></span>
-              </a>
-            </div>
-            <a href="#" className="hover:text-red-200 transition-colors">Pricing</a>
+            <a href="#" className="hover:text-red-200 transition-colors">Services</a>
+            <a href="#" className="hover:text-red-200 transition-colors">Contact</a>
           </div>
         </div>
         
@@ -44,35 +27,35 @@ const LandingPage = () => {
       <div className="flex items-center justify-between px-8 py-16">
         {/* Left Content */}
         <div className="flex-1 text-white max-w-2xl">
-          <p className="text-lg mb-4 opacity-90">Block Chain Technology For</p>
+          <p className="text-lg mb-4 opacity-90">Blockchain Technology For</p>
           <h1 className="text-6xl font-bold leading-tight mb-6">
             Safe Land<br />
             Registration<br />
             Process
           </h1>
           <p className="text-xl mb-12 opacity-90 max-w-lg">
-            We Built Block Chain Based Safe Land Related Data Exchange and Storage
+            We Built Blockchain Based Safe Land Related Data Exchange and Storage
           </p>
           
           {/* Role Selection Buttons */}
-          <div className="flex space-x-4">
+          <div className="flex flex-col space-y-4 max-w-md">
             <Link 
-              to="/dashboard/admin"
-              className="bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-red-700 hover:border-red-800"
+              to="/auth/customer"
+              className="bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-red-700 hover:border-red-800 text-center"
+            >
+              CUSTOMER
+            </Link>
+            <Link 
+              to="/auth/admin"
+              className="bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-red-700 hover:border-red-800 text-center"
             >
               ADMIN
             </Link>
             <Link 
-              to="/dashboard/buyer"
-              className="bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-red-700 hover:border-red-800"
+              to="/auth/land-inspector"
+              className="bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-red-700 hover:border-red-800 text-center"
             >
-              BUYER
-            </Link>
-            <Link 
-              to="/dashboard/landowner"
-              className="bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-red-700 hover:border-red-800"
-            >
-              LAND OWNER
+              LAND INSPECTOR
             </Link>
           </div>
         </div>
@@ -95,14 +78,21 @@ const LandingPage = () => {
             </svg>
           </div>
         </div>
-      </div>
 
-      {/* Wallet Connection Notice */}
-      {!isConnected && (
-        <div className="fixed bottom-4 right-4 bg-white text-red-600 px-6 py-3 rounded-lg shadow-lg">
-          <p className="text-sm font-semibold">Please connect your wallet to access dashboards</p>
+        {/* Security Icons on the right */}
+        <div className="hidden xl:flex flex-col space-y-12 items-center">
+          <div className="bg-red-500 p-4 rounded-full">
+            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18,8h-1V6c0-2.76-2.24-5-5-5S7,3.24,7,6v2H6c-1.1,0-2,0.9-2,2v10c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V10 C20,8.9,19.1,8,18,8z M12,17c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,17,12,17z M15.1,8H8.9V6c0-1.71,1.39-3.1,3.1-3.1 s3.1,1.39,3.1,3.1V8z"/>
+            </svg>
+          </div>
+          <div className="bg-red-500 p-4 rounded-full">
+            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+            </svg>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

@@ -36,24 +36,12 @@ const BuyerDashboard = () => {
 
   const handlePurchaseRequest = async (landId) => {
     try {
-      // This would typically involve creating a purchase request or transfer
       console.log('Purchase request for land:', landId);
       alert('Purchase request sent! (This would be implemented with smart contract)');
     } catch (error) {
       console.error('Error requesting purchase:', error);
     }
   };
-
-  if (!isConnected) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Buyer Dashboard</h2>
-          <p className="text-gray-600">Please connect your wallet to continue</p>
-        </div>
-      </div>
-    );
-  }
 
   if (loading) {
     return (

@@ -1,14 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { WalletProvider } from './hooks/useWallet';
 import Header from './components/Layout/Header';
-import RoleProtectedRoute from './components/RoleProtectedRoute';
 import LandingPage from './pages/LandingPage';
+import CustomerRegistration from './components/auth/CustomerRegistration';
+import AdminLogin from './components/auth/AdminLogin';
+import LandInspectorLogin from './components/auth/LandInspectorLogin';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/dashboards/AdminDashboard';
 import BuyerDashboard from './pages/dashboards/BuyerDashboard';
-import LandOwnerDashboard from './pages/dashboards/LandOwnerDashboard';
+import SellerDashboard from './pages/dashboards/SellerDashboard';
+import LandInspectorDashboard from './pages/dashboards/LandInspectorDashboard';
 import RegisterLand from './pages/RegisterLand';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -22,30 +25,33 @@ function App() {
             {/* Landing page without header */}
             <Route path="/" element={<LandingPage />} />
             
-            {/* Routes with header */}
-            <Route path="/*" element={
+            {/* Auth routes without header */}
+            <Route path="/auth/customer" element={<CustomerRegistration />} />
+            <Route path="/auth/admin" element={<AdminLogin />} />
+            <Route path="/auth/land-inspector" element={<LandInspectorLogin />} />
+            
+            {/* Dashboard routes with header */}
+            <Route path="/dashboard/*" element={
               <>
                 <Header />
                 <main>
                   <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/dashboard/admin" element={
-                      <RoleProtectedRoute requiredRole="admin">
-                        <AdminDashboard />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/dashboard/buyer" element={
-                      <RoleProtectedRoute requiredRole="buyer">
-                        <BuyerDashboard />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/dashboard/landowner" element={
-                      <RoleProtectedRoute requiredRole="landowner">
-                        <LandOwnerDashboard />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/register-land" element={<RegisterLand />} />
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/admin" element={<AdminDashboard />} />
+                    <Route path="/buyer" element={<BuyerDashboard />} />
+                    <Route path="/seller" element={<SellerDashboard />} />
+                    <Route path="/land-inspector" element={<LandInspectorDashboard />} />
                   </Routes>
+                </main>
+              </>
+            } />
+            
+            {/* Other routes with header */}
+            <Route path="/register-land" element={
+              <>
+                <Header />
+                <main>
+                  <RegisterLand />
                 </main>
               </>
             } />

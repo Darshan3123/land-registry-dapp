@@ -3,57 +3,33 @@ import { Link } from 'react-router-dom';
 import { useWallet } from '../../hooks/useWallet';
 import BlockchainService from '../../services/blockchain';
 
-const LandOwnerDashboard = () => {
+const SellerDashboard = () => {
   const { account, signer, isConnected } = useWallet();
   const [ownedLands, setOwnedLands] = useState([]);
-  const [transferRequests, setTransferRequests] = useState([]);
+  const [saleRequests, setSaleRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadOwnerData = async () => {
+    const loadSellerData = async () => {
       if (!isConnected || !signer) return;
 
       try {
         const blockchainService = new BlockchainService(signer);
         
-        // Load lands owned by this user
         const lands = await blockchainService.getUserLands(account);
         setOwnedLands(lands);
 
-        // Load transfer requests (this would be implemented in smart contract)
-        setTransferRequests([]);
+        setSaleRequests([]);
 
       } catch (error) {
-        console.error('Error loading owner data:', error);
+        console.error('Error loading seller data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadOwnerData();
+    loadSellerData();
   }, [account, signer, isConnected]);
-
-  const handleTransferLand = async (landId, newOwner) => {
-    try {
-      const blockchainService = new BlockchainService(signer);
-      await blockchainService.transferLand(landId, newOwner);
-      // Refresh data
-      window.location.reload();
-    } catch (error) {
-      console.error('Error transferring land:', error);
-    }
-  };
-
-  if (!isConnected) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Land Owner Dashboard</h2>
-          <p className="text-gray-600">Please connect your wallet to continue</p>
-        </div>
-      </div>
-    );
-  }
 
   if (loading) {
     return (
@@ -65,16 +41,14 @@ const LandOwnerDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-red-600 text-white p-6">
         <div className="container mx-auto">
-          <h1 className="text-3xl font-bold">Land Owner Dashboard</h1>
-          <p className="opacity-90">Manage your land properties and registrations</p>
+          <h1 className="text-3xl font-bold">Seller Dashboard</h1>
+          <p className="opacity-90">Manage your land properties and sales</p>
         </div>
       </div>
 
       <div className="container mx-auto p-6">
-        {/* Stats Cards */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-gray-700">Total Properties</h3>
@@ -93,12 +67,11 @@ const LandOwnerDashboard = () => {
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold text-gray-700">Transfer Requests</h3>
-            <p className="text-3xl font-bold text-blue-600">{transferRequests.length}</p>
+            <h3 className="text-lg font-semibold text-gray-700">Sale Requests</h3>
+            <p className="text-3xl font-bold text-blue-600">{saleRequests.length}</p>
           </div>
         </div>
 
-        {/* Quick Actions */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-2">Register New Land</h3>
@@ -112,10 +85,10 @@ const LandOwnerDashboard = () => {
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold mb-2">Transfer Property</h3>
-            <p className="text-gray-600 text-sm mb-4">Transfer ownership to another party</p>
+            <h3 className="text-lg font-semibold mb-2">List for Sale</h3>
+            <p className="text-gray-600 text-sm mb-4">Put your verified properties on sale</p>
             <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
-              Transfer Land
+              List Property
             </button>
           </div>
 
@@ -128,7 +101,6 @@ const LandOwnerDashboard = () => {
           </div>
         </div>
 
-        {/* Owned Properties */}
         <div className="bg-white rounded-lg shadow-md mb-8">
           <div className="p-6 border-b">
             <h2 className="text-xl font-semibold">Your Properties</h2>
@@ -184,7 +156,7 @@ const LandOwnerDashboard = () => {
                         {land.isVerified && (
                           <>
                             <button className="text-green-600 hover:text-green-900 mr-3">
-                              Transfer
+                              List for Sale
                             </button>
                             <button className="text-purple-600 hover:text-purple-900">
                               Certificate
@@ -199,54 +171,9 @@ const LandOwnerDashboard = () => {
             </div>
           )}
         </div>
-
-        {/* Transfer Requests */}
-        {transferRequests.length > 0 && (
-          <div className="bg-white rounded-lg shadow-md">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-semibold">Transfer Requests</h2>
-            </div>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Land ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Requester</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {transferRequests.map((request) => (
-                    <tr key={request.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        #{request.landId}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {request.requester.slice(0, 10)}...
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {request.date}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors mr-2">
-                          Approve
-                        </button>
-                        <button className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors">
-                          Reject
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
 };
 
-export default LandOwnerDashboard;
+export default SellerDashboard;
