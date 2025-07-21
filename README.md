@@ -1,6 +1,6 @@
 # 🏠 Land Registry DApp
 
-A decentralized application for land registration using Ethereum blockchain and IPFS for document storage.
+A decentralized application for land registration using Ethereum blockchain and IPFS for document storage. Features a complete role-based authentication system with separate dashboards for different user types.
 
 ## 🚀 Quick Start
 
@@ -67,11 +67,48 @@ REACT_APP_PINATA_SECRET_API_KEY=your_secret_key
 
 ## 📋 Features
 
+### 🔐 Role-Based Authentication System
+- **Customer Registration**: MetaMask wallet connection with Buyer/Seller role selection
+- **Admin Login**: Secure login for administrators (admin/admin123)
+- **Land Inspector Login**: Dedicated access for land inspectors (inspector/insp123)
+- **Session Management**: localStorage-based authentication with automatic redirects
+
+### 👥 User Roles & Dashboards
+
+#### 🛒 **Buyer Dashboard**
+- Browse available verified properties
+- View owned properties
+- Request property purchases
+- Property details with owner information
+- Purchase history tracking
+
+#### 🏡 **Seller Dashboard**
+- Register new land properties
+- Manage owned properties
+- List properties for sale
+- Download ownership certificates
+- Track verification status
+
+#### 👨‍💼 **Admin Dashboard**
+- View all registered lands
+- Manage pending verifications
+- Approve/reject land registrations
+- System-wide statistics
+- User management capabilities
+
+#### 🔍 **Land Inspector Dashboard**
+- Review pending land inspections
+- Approve/reject property verifications
+- Priority-based task management
+- Schedule on-site inspections
+- Generate inspection reports
+
+### 🏠 **Core Land Registry Features**
 - **Land Registration**: Register land with owner details and location
 - **Document Upload**: Upload documents to IPFS for permanent storage
-- **Admin Controls**: Only admin can register new land
 - **Land Transfer**: Transfer land ownership between addresses
-- **Land Verification**: Admin can verify registered land
+- **Land Verification**: Multi-level verification process
+- **Certificate Generation**: Digital ownership certificates
 
 ## 🏗️ Architecture
 
@@ -82,11 +119,57 @@ REACT_APP_PINATA_SECRET_API_KEY=your_secret_key
 
 ## 🔍 Usage
 
-1. Connect your MetaMask wallet
-2. Fill in land details (ID, owner address, location)
-3. Upload a document (deed, certificate, etc.)
-4. Click "Upload File & Register Land"
-5. Confirm the transaction in MetaMask
+### 🚀 Getting Started
+
+1. **Visit the Landing Page** at `http://localhost:3000`
+2. **Choose Your Role** from the three options:
+
+#### 👤 **For Customers (Buyers/Sellers)**
+1. Click **"CUSTOMER"** button
+2. Connect your MetaMask wallet
+3. Select your role: **Buyer** or **Seller**
+4. Click **"Register & Continue"**
+5. Access your role-specific dashboard
+
+#### 👨‍💼 **For Administrators**
+1. Click **"ADMIN"** button
+2. Enter credentials:
+   - **ID**: `admin`
+   - **Password**: `admin123`
+3. Access the Admin Dashboard
+
+#### 🔍 **For Land Inspectors**
+1. Click **"LAND INSPECTOR"** button
+2. Enter credentials:
+   - **ID**: `inspector`
+   - **Password**: `insp123`
+3. Access the Land Inspector Dashboard
+
+### 📱 Dashboard Features
+
+#### **Seller Workflow**
+1. Register new land properties
+2. Upload property documents to IPFS
+3. Wait for admin/inspector verification
+4. List verified properties for sale
+
+#### **Buyer Workflow**
+1. Browse available verified properties
+2. Request property purchases
+3. View owned properties
+4. Download ownership certificates
+
+#### **Admin Workflow**
+1. Review all land registrations
+2. Approve/reject pending verifications
+3. Monitor system statistics
+4. Manage user activities
+
+#### **Inspector Workflow**
+1. Review pending inspections
+2. Schedule on-site visits
+3. Approve/reject property verifications
+4. Generate inspection reports
 
 ## 🛠️ Development
 
