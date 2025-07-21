@@ -38,7 +38,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/buyer" element={<BuyerDashboard />} />
+                    <Route path="/buyer" element={<Dashboard />} />
                     <Route path="/seller" element={<SellerDashboard />} />
                     <Route path="/land-inspector" element={<LandInspectorDashboard />} />
                   </Routes>
