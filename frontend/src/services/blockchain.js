@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+﻿import { ethers } from "ethers";
 import LandRegistryABI from "../LandRegistry.json";
 import { CONTRACT_ADDRESS } from "../contract-config";
 
@@ -12,36 +12,16 @@ export class BlockchainService {
     );
   }
 
-  // Land Registration
-  async registerLand(landData) {
-    try {
-      const tx = await this.contract.registerLand(
-        landData.location,
-        landData.area,
-        landData.landType,
-        landData.ipfsHash
-      );
-      await tx.wait();
-      return tx;
-    } catch (error) {
-      console.error("Error registering land:", error);
-      throw error;
-    }
-  }
-
   // Get Land Details
   async getLandDetails(landId) {
     try {
-      const land = await this.contract.getLandDetails(landId);
+      const land = await this.contract.getLand(landId);
       return {
-        id: land.id,
-        owner: land.owner,
-        location: land.location,
-        area: land.area,
-        landType: land.landType,
-        isVerified: land.isVerified,
-        ipfsHash: land.ipfsHash,
-        registrationDate: new Date(Number(land.registrationDate) * 1000),
+        id: land[0],
+        owner: land[1],
+        location: land[2],
+        documentCID: land[3],
+        isVerified: land[4]
       };
     } catch (error) {
       console.error("Error getting land details:", error);
@@ -49,33 +29,42 @@ export class BlockchainService {
     }
   }
 
-  // Transfer Ownership
-  async transferOwnership(landId, newOwner) {
+  // Transfer Land
+  async transferLand(landId, newOwner) {
     try {
-      const tx = await this.contract.transferOwnership(landId, newOwner);
+      const tx = await this.contract.transferLand(landId, newOwner);
       await tx.wait();
       return tx;
     } catch (error) {
-      console.error("Error transferring ownership:", error);
+      console.error("Error transferring land:", error);
       throw error;
     }
   }
 
-  // Get User's Lands
+  // Get User's Lands (simplified version - checks first 100 land IDs)
   async getUserLands(userAddress) {
     try {
-      const landIds = await this.contract.getUserLands(userAddress);
-      const lands = await Promise.all(
-        landIds.map((id) => this.getLandDetails(id))
-      );
+      const lands = [];
+      // Check first 100 possible land IDs
+      for (let i = 1; i <= 100; i++) {
+        try {
+          const land = await this.getLandDetails(i);
+          if (land.owner.toLowerCase() === userAddress.toLowerCase()) {
+            lands.push(land);
+          }
+        } catch (error) {
+          // Land doesn't exist, continue
+          continue;
+        }
+      }
       return lands;
     } catch (error) {
       console.error("Error getting user lands:", error);
-      throw error;
+      return [];
     }
   }
 
-  // Verify Land (Inspector only)
+  // Verify Land (Admin only)
   async verifyLand(landId) {
     try {
       const tx = await this.contract.verifyLand(landId);
@@ -87,44 +76,21 @@ export class BlockchainService {
     }
   }
 
-  // Get User Role
-  async getUserRole(userAddress) {
+  // Register Land (Admin only)
+  async registerLand(landData) {
     try {
-      const role = await this.contract.getUserRole(userAddress);
-      const roles = ["Admin", "Inspector", "User"];
-      return roles[role] || "User";
+      const tx = await this.contract.registerLand(
+        landData.landId || Date.now(), // Use timestamp as ID if not provided
+        landData.owner || await this.signer.getAddress(),
+        landData.location,
+        landData.ipfsHash || ""
+      );
+      await tx.wait();
+      return tx;
     } catch (error) {
-      console.error("Error getting user role:", error);
-      return "User";
+      console.error("Error registering land:", error);
+      throw error;
     }
-  }
-
-  // Get All Lands (for admin dashboard)
-  async getAllLands() {
-    try {
-      const totalLands = await this.contract.landCounter();
-      const lands = [];
-      
-      for (let i = 1; i <= totalLands; i++) {
-        try {
-          const land = await this.getLandDetails(i);
-          lands.push(land);
-        } catch (error) {
-          // Skip if land doesn't exist or error occurred
-          console.warn(`Error getting land ${i}:`, error);
-        }
-      }
-      
-      return lands;
-    } catch (error) {
-      console.error("Error getting all lands:", error);
-      return [];
-    }
-  }
-
-  // Transfer Land (alias for transferOwnership)
-  async transferLand(landId, newOwner) {
-    return this.transferOwnership(landId, newOwner);
   }
 
   // Listen to Events
@@ -132,8 +98,8 @@ export class BlockchainService {
     this.contract.on("LandRegistered", callback);
   }
 
-  onOwnershipTransferred(callback) {
-    this.contract.on("OwnershipTransferred", callback);
+  onLandTransferred(callback) {
+    this.contract.on("LandTransferred", callback);
   }
 
   onLandVerified(callback) {

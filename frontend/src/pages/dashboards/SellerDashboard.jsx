@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../../hooks/useWallet';
 import BlockchainService from '../../services/blockchain';
@@ -72,7 +72,7 @@ const SellerDashboard = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-2">Register New Land</h3>
             <p className="text-gray-600 text-sm mb-4">Add a new property to the registry</p>
@@ -92,6 +92,16 @@ const SellerDashboard = () => {
             </button>
           </div>
 
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold mb-2">Transfer Ownership</h3>
+            <p className="text-gray-600 text-sm mb-4">Transfer land to another owner</p>
+            <Link 
+              to="/dashboard"
+              className="inline-block bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition-colors"
+            >
+              Transfer Land
+            </Link>
+          </div>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-2">Download Certificates</h3>
             <p className="text-gray-600 text-sm mb-4">Get ownership certificates</p>
@@ -138,7 +148,7 @@ const SellerDashboard = () => {
                         {land.location}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {land.area} sq ft
+                        N/A
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 text-xs rounded-full ${
@@ -177,3 +187,5 @@ const SellerDashboard = () => {
 };
 
 export default SellerDashboard;
+
+
