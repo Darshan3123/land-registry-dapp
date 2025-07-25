@@ -12,6 +12,8 @@ import AdminDashboard from './pages/dashboards/AdminDashboard';
 import BuyerDashboard from './pages/dashboards/BuyerDashboard';
 import SellerDashboard from './pages/dashboards/SellerDashboard';
 import LandInspectorDashboard from './pages/dashboards/LandInspectorDashboard';
+import ActiveUsers from './pages/dashboards/ActiveUsers';
+import ManageUsers from './pages/dashboards/ManageUsers';
 import RegisterLand from './pages/RegisterLand';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -24,39 +26,81 @@ function App() {
           <Routes>
             {/* Landing page without header */}
             <Route path="/" element={<LandingPage />} />
-            
+
             {/* Auth routes without header */}
             <Route path="/auth/customer" element={<CustomerRegistration />} />
             <Route path="/auth/admin" element={<AdminLogin />} />
             <Route path="/auth/land-inspector" element={<LandInspectorLogin />} />
-            
+            <Route path="/buyer" element={<BuyerDashboard />} />
+
             {/* Dashboard routes with header */}
-            <Route path="/dashboard/*" element={
-              <>
-                <Header />
-                <main>
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/buyer" element={<Dashboard />} />
-                    <Route path="/seller" element={<SellerDashboard />} />
-                    <Route path="/land-inspector" element={<LandInspectorDashboard />} />
-                  </Routes>
-                </main>
-              </>
-            } />
-            
+            <Route
+              path="/dashboard"
+              element={
+                <>
+                  <Header />
+                  <Dashboard />
+                </>
+              }
+            />
+            <Route
+              path="/dashboard/admin/user"
+              element={
+                <>
+                  <Header />
+                  <AdminDashboard />
+                </>
+              }
+            />
+            <Route
+              path="/dashboard/seller"
+              element={
+                <>
+                  <Header />
+                  <SellerDashboard />
+                </>
+              }
+            />
+            <Route
+              path="/dashboard/land-inspector"
+              element={
+                <>
+                  <Header />
+                  <LandInspectorDashboard />
+                </>
+              }
+            />
+            <Route
+  path="/dashboard/admin/users"
+  element={
+    <>
+      <Header />
+      <ManageUsers />
+    </>
+  }
+/>
+            <Route
+              path="/dashboard/admin/active"
+              element={
+                <>
+                  <Header />
+                  <ActiveUsers />
+                </>
+              }
+            />
+
             {/* Other routes with header */}
-            <Route path="/register-land" element={
-              <>
-                <Header />
-                <main>
+            <Route
+              path="/register-land"
+              element={
+                <>
+                  <Header />
                   <RegisterLand />
-                </main>
-              </>
-            } />
+                </>
+              }
+            />
           </Routes>
-          
+
           <ToastContainer
             position="top-right"
             autoClose={5000}
